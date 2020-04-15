@@ -1,0 +1,19 @@
+{
+    "name": "foss-tracking-chore",
+    "version": "0.0.1",
+    "description": "Things used for meet the target",
+    "main": "index.js",
+    "author": "Alexis Janvier <alexis@marmelab.com> (https://www.marmelab.com)",
+    "license": "GPL-3.0",
+    "dependencies": {
+        "@octokit/rest": "17.2.1",
+        "convict": "5.2.0",
+        "knex": "0.20.13",
+        "knex-paginate": "1.2.0",
+        "knex-stringcase": "1.4.1",
+        "lodash.omit": "4.5.0",
+        "lodash.pick": "4.4.0",
+        "pg": "8.0.2",
+        "signale": "1.4.0"
+    }
+}

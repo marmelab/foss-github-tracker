@@ -1,0 +1,16 @@
+version: "3.4"
+services:
+  postgres:
+    image: postgres:10
+    environment:
+      - POSTGRES_USER=alexisjanvier
+      - POSTGRES_PASSWORD=alexisjanvier
+      - POSTGRES_DB=foss_analyse
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+    volumes:
+      - fossAnalyse-pg-data:/var/lib/postgresql/data/pgdata
+      - ./dumps:/dumps
+volumes:
+  fossAnalyse-pg-data:

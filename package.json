@@ -1,0 +1,39 @@
+{
+    "name": "foss-tracking",
+    "private": true,
+    "version": "0.1.0",
+    "license": "GPL-3.0",
+    "author": "Alexis Janvier <contact@alexisjanvier.net>",
+    "contributors": [],
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "lint": "eslint .",
+        "format": "prettier --write --check \"**/*.+(js|md|json)\"",
+        "format:ci": "prettier --check \"**/*.+(js|md|json)\"",
+        "test": "jest",
+        "test:watch": "jest --watchAll",
+        "adr:new": "adr-tools new",
+        "adr:list": "adr-tools list"
+    },
+    "devDependencies": {
+        "adr-tools": "2.0.4",
+        "eslint": "6.8.0",
+        "eslint-config-prettier": "6.10.1",
+        "eslint-plugin-jest": "23.8.2",
+        "eslint-plugin-prettier": "3.1.2",
+        "husky": "4.2.3",
+        "jest": "25.3.0",
+        "lint-staged": "10.1.2",
+        "prettier": "2.0.4"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{js,json}": "yarn run lint"
+    }
+}

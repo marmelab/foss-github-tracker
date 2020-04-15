@@ -1,0 +1,6 @@
+{
+    "language": "en",
+    "path": "doc/adr/",
+    "prefix": "foss-tracking-",
+    "digits": 3
+}
