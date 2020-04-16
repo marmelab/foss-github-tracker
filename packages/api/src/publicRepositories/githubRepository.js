@@ -1,4 +1,4 @@
-const { NONE } = require('./repository');
+const { NONE } = require('./publicRepository');
 
 const convertForSave = (githubRepo) => ({
     githubId: githubRepo.node_id,

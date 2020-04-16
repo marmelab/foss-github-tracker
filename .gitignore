@@ -110,3 +110,8 @@ temp/
 
 # Env files
 *.env
+.envrc
+
+# Db dump
+/dumps
+

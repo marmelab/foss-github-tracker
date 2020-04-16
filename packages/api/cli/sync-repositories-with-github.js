@@ -1,28 +1,24 @@
-const knex = require('knex');
 const signale = require('signale');
 
-const octokit = require('../chore/src/githubClient');
-const knexConfig = require('../chore/src/knexfile');
+const gitHubClient = require('../src/githubClient');
 const {
     convertForSave,
     convertForUpdate,
-} = require('../chore/src/repositories/githubRepository');
-const {
-    convertForSave: convertContributorForSave,
-} = require('../chore/src/contributors/githubContributor');
+} = require('../src/publicRepositories/githubRepository');
+const { getDbClient } = require('../src/toolbox/dbConnexion');
 
-const pg = knex(knexConfig);
+const pgClient = getDbClient();
 
-const createNewRepository = async (pg, data) => {
+const createNewRepository = async (pgClient, data) => {
     try {
-        await pg('repositories').insert(data);
+        await pgClient('repositories').insert(data);
     } catch (error) {
         signale.error('Error with repo. creation: ', error.message);
     }
 };
-const updateRepository = async (pg, id, data) => {
+const updateRepository = async (pgClient, id, data) => {
     try {
-        await pg('repositories').update(data).where({ id });
+        await pgClient('repositories').update(data).where({ id });
     } catch (error) {
         signale.error('Error with repo. update: ', error.message);
     }
@@ -30,13 +26,13 @@ const updateRepository = async (pg, id, data) => {
 
 const githubRepositoriesSynchronization = async () => {
     signale.info('Ok Github: start repositories synchronization');
-    const repositories = await pg('repositories').select(
+    const repositories = await pgClient('repositories').select(
         'id',
         'githubId',
         'name'
     );
     let newRepo = 0;
-    await octokit.repos
+    await gitHubClient.repos
         .listForOrg({
             org: 'marmelab',
             type: 'public',
@@ -49,18 +45,18 @@ const githubRepositoriesSynchronization = async () => {
                     (r) => r.githubId === repo.node_id
                 );
                 if (!existingRepo) {
-                    await createNewRepository(pg, convertForSave(repo));
+                    await createNewRepository(pgClient, convertForSave(repo));
                     newRepo++;
                 } else {
                     await updateRepository(
-                        pg,
+                        pgClient,
                         existingRepo.id,
                         convertForUpdate(repo)
                     );
                 }
             });
         });
-    await octokit.repos
+    await gitHubClient.repos
         .listForOrg({
             org: 'marmelab',
             type: 'public',
@@ -74,11 +70,11 @@ const githubRepositoriesSynchronization = async () => {
                     (r) => r.githubId === repo.node_id
                 );
                 if (!existingRepo) {
-                    await createNewRepository(pg, convertForSave(repo));
+                    await createNewRepository(pgClient, convertForSave(repo));
                     newRepo++;
                 } else {
                     await updateRepository(
-                        pg,
+                        pgClient,
                         existingRepo.id,
                         convertForSave(repo)
                     );
@@ -94,43 +90,7 @@ const githubRepositoriesSynchronization = async () => {
     return 'ok';
 };
 
-const createNewContributor = async (pg, data) => {
-    try {
-        await pg('contributors').insert(data);
-    } catch (error) {
-        signale.error('Error with Contributor creation: ', error.message);
-    }
-};
-const githubContributorsSynchronization = async () => {
-    signale.info('Ok Github: start contributors synchronization');
-    const contributors = await pg('contributors').select(
-        'id',
-        'githubId',
-        'name'
-    );
-    let newContributors = 0;
-    await octokit.orgs.listMembers({ org: 'marmelab' }).then((ghResponse) => {
-        ghResponse.data.map(async (contributor) => {
-            const existingContributor = contributors.find(
-                (ct) => ct.githubId === contributor.node_id
-            );
-            if (!existingContributor) {
-                const data = convertContributorForSave(contributor);
-                await createNewContributor(pg, data);
-            }
-        });
-    });
-    if (newContributors) {
-        signale.info(`${newContributors} new contributors have been created.`);
-    } else {
-        signale.info("All Marmelab's contributors was already in database");
-    }
-
-    return 'ok';
-};
-
 githubRepositoriesSynchronization()
-    .then(githubContributorsSynchronization)
     .then(() => {
         signale.info('End of Github synchronization');
         process.exit(0);

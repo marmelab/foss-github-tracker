@@ -22,10 +22,9 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## Maintainer
 
-[![alexisjanvier](https://avatars1.githubusercontent.com/u/547706?s=96&amp;v=4)](https://github.com/alexisjanvier)
+[![alexisjanvier](https://avatars1.githubusercontent.com/u/547706?s=96&v=4)](https://github.com/alexisjanvier)
 [Alexis Janvier](https://github.com/alexisjanvier)
 
 ## License
 
 PublicRepOsitoriesTracker is licensed under the [MIT License](LICENSE), courtesy of [Marmelab](http://marmelab.com).
-
