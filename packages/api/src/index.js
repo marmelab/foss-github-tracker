@@ -13,7 +13,7 @@ const app = new Koa();
 app.use(
     cors({
         origin: '*',
-        allowHeaders: ['Origin, Content-Type, Accept'],
+        allowHeaders: ['Origin, Content-Type, Accept, authorization'],
         exposeHeaders: ['X-Total-Count', 'Link'],
     })
 );

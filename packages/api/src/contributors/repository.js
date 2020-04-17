@@ -16,7 +16,7 @@ const { getDbClient } = require('../toolbox/dbConnexion');
 
 const tableName = 'contributors';
 const filterableFields = [];
-const sortableFields = ['login', 'name'];
+const sortableFields = ['login', 'name', 'id'];
 
 /**
  * Knex query for filtrated list
@@ -82,10 +82,11 @@ const getFilteredQuery = (client, filters, sort) => {
  * @returns {Promise} - paginated object with paginated list and totalCount
  */
 const getPaginatedList = async ({ filters, sort, pagination }) => {
+    const sanitizedSort = sortSanitizer(sort, sortableFields);
     const query = getFilteredQuery(
         getDbClient(),
         filtersSanitizer(filters, filterableFields),
-        sortSanitizer(sort, sortableFields)
+        sanitizedSort
     );
     const { perPage, currentPage } = paginationSanitizer(pagination);
 
