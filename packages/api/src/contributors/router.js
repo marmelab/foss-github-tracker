@@ -4,7 +4,12 @@ const {
     formatPaginationToLinkHeader,
     prepareQueryParametersForList,
 } = require('../toolbox/sanitizers');
-const { getOne, getPaginatedList } = require('./repository');
+const {
+    deleteOne,
+    getOne,
+    getPaginatedList,
+    updateOne,
+} = require('./repository');
 
 const router = new Router({
     prefix: '/api/contributors',
@@ -50,56 +55,52 @@ router.get('/:contributorId', async (ctx) => {
 });
 
 router.delete('/:contributorId', async (ctx) => {
-    // const deletedJobPosting = await deleteJobPosting({
-    //     client: ctx.db,
-    //     jobPostingId: ctx.params.jobPostingId,
-    // });
+    const deletedUser = await deleteOne(ctx.params.contributorId);
 
-    // if (deletedJobPosting.error) {
-    //     const explainedError = new Error(deletedJobPosting.error.message);
-    //     explainedError.status = 400;
+    if (deletedUser.error) {
+        const explainedError = new Error(deletedUser.error.message);
+        explainedError.status = 400;
 
-    //     throw explainedError;
-    // }
+        throw explainedError;
+    }
 
-    // if (!deletedJobPosting.id) {
-    //     const explainedError = new Error(
-    //         `The jobPosting of id ${ctx.params.jobPostingId} does not exist.`
-    //     );
-    //     explainedError.status = 404;
+    if (!deletedUser.id) {
+        const explainedError = new Error(
+            `The contributor of id ${ctx.params.contributorId} does not exist.`
+        );
+        explainedError.status = 404;
 
-    //     throw explainedError;
-    // }
+        throw explainedError;
+    }
 
-    // ctx.body = deletedJobPosting;
-    ctx.body = 'DELETE contribubutor';
+    ctx.body = {
+        message: `contributor ${deletedUser.id} has been deleted`,
+    };
 });
 
 router.put('/:contributorId', async (ctx) => {
-    // const updatedJobPosting = await updateJobPosting({
-    //     client: ctx.db,
-    //     jobPostingId: ctx.params.jobPostingId,
-    //     apiData: ctx.request.body,
-    // });
+    const updatedContributor = await updateOne(
+        ctx.params.contributorId,
+        ctx.request.body
+    );
 
-    // if (updatedJobPosting.error) {
-    //     const explainedError = new Error(updatedJobPosting.error.message);
-    //     explainedError.status = 400;
+    if (!updatedContributor) {
+        const explainedError = new Error(
+            `The contributor of id ${ctx.params.contributorId} does not exist.`
+        );
+        explainedError.status = 404;
 
-    //     throw explainedError;
-    // }
+        throw explainedError;
+    }
 
-    // if (!updatedJobPosting.id) {
-    //     const explainedError = new Error(
-    //         `The jobPosting of id ${ctx.params.jobPostingId} does not exist, so it could not be updated`
-    //     );
-    //     explainedError.status = 404;
+    if (updatedContributor.error) {
+        const explainedError = new Error(updatedContributor.error.message);
+        explainedError.status = 400;
 
-    //     throw explainedError;
-    // }
+        throw explainedError;
+    }
 
-    // ctx.body = updatedJobPosting;
-    ctx.body = 'UPDATE contribubutor';
+    ctx.body = updatedContributor;
 });
 
 module.exports = router;

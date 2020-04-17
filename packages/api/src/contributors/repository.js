@@ -123,7 +123,29 @@ const getOne = async (id) => {
         .catch((error) => ({ error }));
 };
 
+const deleteOne = (id) => {
+    const client = getDbClient();
+    return client(tableName)
+        .where({ id })
+        .del()
+        .then((nbDeletion) => {
+            return nbDeletion ? { id } : {};
+        })
+        .catch((error) => ({ error }));
+};
+
+const updateOne = async (id, data) => {
+    const client = getDbClient();
+    return client(tableName)
+        .update(data)
+        .where({ id })
+        .then(() => getOne(id))
+        .catch((error) => ({ error }));
+};
+
 module.exports = {
+    deleteOne,
     getOne,
     getPaginatedList,
+    updateOne,
 };
