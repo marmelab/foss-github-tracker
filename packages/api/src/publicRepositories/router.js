@@ -4,7 +4,7 @@ const {
     formatPaginationToLinkHeader,
     prepareQueryParametersForList,
 } = require('../toolbox/sanitizers');
-const { getOne, getPaginatedList } = require('./repository');
+const { getOne, getPaginatedList, updateOne } = require('./repository');
 
 const router = new Router({
     prefix: '/api/repositories',
@@ -47,6 +47,28 @@ router.get('/:repositortId', async (ctx) => {
     }
 
     ctx.body = repository;
+});
+
+router.put('/:id', async (ctx) => {
+    const updatedRepository = await updateOne(ctx.params.id, ctx.request.body);
+
+    if (!updatedRepository) {
+        const explainedError = new Error(
+            `The repository of id ${ctx.params.repositortId} does not exist.`
+        );
+        explainedError.status = 404;
+
+        throw explainedError;
+    }
+
+    if (updatedRepository.error) {
+        const explainedError = new Error(updatedRepository.error.message);
+        explainedError.status = 400;
+
+        throw explainedError;
+    }
+
+    ctx.body = updatedRepository;
 });
 
 module.exports = router;

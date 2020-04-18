@@ -4,5 +4,5 @@ import { ContributorList } from './List';
 export default {
     list: ContributorList,
     icon: UserIcon,
-    options: { label: 'La team' }
+    options: { label: 'Team' }
 };

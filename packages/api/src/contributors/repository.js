@@ -5,6 +5,10 @@ const {
     FILTER_OPERATOR_GTE,
     FILTER_OPERATOR_LT,
     FILTER_OPERATOR_LTE,
+    FILTER_OPERATOR_IN,
+    FILTER_OPERATOR_LP,
+    FILTER_OPERATOR_PL,
+    FILTER_OPERATOR_PLP,
 } = require('../toolbox/sanitizers');
 
 const {
@@ -15,7 +19,7 @@ const {
 const { getDbClient } = require('../toolbox/dbConnexion');
 
 const tableName = 'contributors';
-const filterableFields = [];
+const filterableFields = ['id'];
 const sortableFields = ['login', 'name', 'id'];
 
 /**
@@ -58,6 +62,18 @@ const getFilteredQuery = (client, filters, sort) => {
                 break;
             case FILTER_OPERATOR_GTE:
                 query.andWhere(filter.name, '>=', filter.value);
+                break;
+            case FILTER_OPERATOR_IN:
+                query.whereIn(filter.name, JSON.parse(filter.value));
+                break;
+            case FILTER_OPERATOR_PLP:
+                query.andWhere(filter.name, 'LIKE', `%${filter.value}%`);
+                break;
+            case FILTER_OPERATOR_PL:
+                query.andWhere(filter.name, 'LIKE', `%${filter.value}`);
+                break;
+            case FILTER_OPERATOR_LP:
+                query.andWhere(filter.name, 'LIKE', `${filter.value}%`);
                 break;
             default:
                 signale.log(

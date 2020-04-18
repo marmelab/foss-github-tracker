@@ -1,14 +1,15 @@
 import UserIcon from '@material-ui/icons/People';
 import List from './List';
+import Edit from './Edit';
 
 
-const NONE = 'none';
-const MAINTAINED = 'maintained';
-const TRANSMITTED = 'transmitted';
-const HACKDAY = 'hackday';
-const PUBLICATION = 'publication';
-const ONBOARDING = 'onboarding';
-const ARCHIVED = 'archived';
+export const NONE = 'none';
+export const MAINTAINED = 'maintained';
+export const TRANSMITTED = 'transmitted';
+export const HACKDAY = 'hackday';
+export const PUBLICATION = 'publication';
+export const ONBOARDING = 'onboarding';
+export const ARCHIVED = 'archived';
 
 export const decisions = [
     { id: NONE, name: 'none' },
@@ -22,6 +23,7 @@ export const decisions = [
 
 export default {
     list: List,
+    edit: Edit,
     icon: UserIcon,
-    options: { label: 'Les repo. publics' }
+    options: { label: 'Public Repositories' }
 };

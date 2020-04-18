@@ -29,12 +29,20 @@ const FILTER_OPERATOR_GT = 'gt';
 const FILTER_OPERATOR_LT = 'lt';
 const FILTER_OPERATOR_GTE = 'gte';
 const FILTER_OPERATOR_LTE = 'lte';
+const FILTER_OPERATOR_IN = 'in';
+const FILTER_OPERATOR_PLP = '%l%';
+const FILTER_OPERATOR_PL = '%l';
+const FILTER_OPERATOR_LP = 'l%';
 const filterOperators = [
     FILTER_OPERATOR_EQ,
     FILTER_OPERATOR_GT,
     FILTER_OPERATOR_GTE,
     FILTER_OPERATOR_LT,
     FILTER_OPERATOR_LTE,
+    FILTER_OPERATOR_IN,
+    FILTER_OPERATOR_LP,
+    FILTER_OPERATOR_PL,
+    FILTER_OPERATOR_PLP,
 ];
 /**
  * Method to clean the filters sent in query parameters
@@ -180,4 +188,8 @@ module.exports = {
     FILTER_OPERATOR_GTE,
     FILTER_OPERATOR_LT,
     FILTER_OPERATOR_LTE,
+    FILTER_OPERATOR_IN,
+    FILTER_OPERATOR_LP,
+    FILTER_OPERATOR_PL,
+    FILTER_OPERATOR_PLP,
 };

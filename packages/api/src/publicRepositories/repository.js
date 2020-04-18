@@ -5,6 +5,10 @@ const {
     FILTER_OPERATOR_GTE,
     FILTER_OPERATOR_LT,
     FILTER_OPERATOR_LTE,
+    FILTER_OPERATOR_IN,
+    FILTER_OPERATOR_LP,
+    FILTER_OPERATOR_PL,
+    FILTER_OPERATOR_PLP,
 } = require('../toolbox/sanitizers');
 
 const {
@@ -16,8 +20,9 @@ const { getDbClient } = require('../toolbox/dbConnexion');
 
 const tableName = 'repositories';
 const filterableFields = [
-    'name:%l%',
-    'license:%l%',
+    'id',
+    'name',
+    'license',
     'isArchived',
     'isGame',
     'decision',
@@ -77,6 +82,18 @@ const getFilteredQuery = (client, filters, sort) => {
                 break;
             case FILTER_OPERATOR_GTE:
                 query.andWhere(filter.name, '>=', filter.value);
+                break;
+            case FILTER_OPERATOR_IN:
+                query.whereIn(filter.name, JSON.parse(filter.value));
+                break;
+            case FILTER_OPERATOR_PLP:
+                query.andWhere(filter.name, 'LIKE', `%${filter.value}%`);
+                break;
+            case FILTER_OPERATOR_PL:
+                query.andWhere(filter.name, 'LIKE', `%${filter.value}`);
+                break;
+            case FILTER_OPERATOR_LP:
+                query.andWhere(filter.name, 'LIKE', `${filter.value}%`);
                 break;
             default:
                 signale.log(
@@ -156,11 +173,50 @@ const deleteOne = (id) => {
 
 const updateOne = async (id, data) => {
     const client = getDbClient();
-    return client(tableName)
-        .update(data)
-        .where({ id })
-        .then(() => getOne(id))
-        .catch((error) => ({ error }));
+    const { maintainerids, decision } = data;
+
+    try {
+        await client.transaction((trx) => {
+            client(tableName)
+                .transacting(trx)
+                .where({ id })
+                .update({ decision })
+                .then(async () => {
+                    if (maintainerids && maintainerids.length) {
+                        await client('repository_maintainer')
+                            .transacting(trx)
+                            .del()
+                            .where({ repository_id: id });
+
+                        const now = new Date();
+                        const linksToCreate = maintainerids
+                            .map((contributorId) => {
+                                return contributorId
+                                    ? client('repository_maintainer')
+                                          .transacting(trx)
+                                          .insert({
+                                              contributor_id: contributorId,
+                                              repository_id: id,
+                                              createdAt: now.toISOString(),
+                                              updatedAt: now.toISOString(),
+                                          })
+                                    : null;
+                            })
+                            .filter((x) => x);
+
+                        return Promise.all(linksToCreate);
+                    }
+
+                    return true;
+                })
+                .then(trx.commit)
+                .catch(trx.rollback);
+        });
+    } catch (error) {
+        return { error };
+    }
+
+    return getOne(id).catch((error) => ({ error }));
 };
 
 module.exports = {
