@@ -33,6 +33,6 @@
         }
     },
     "lint-staged": {
-        "*.{js,json}": "yarn run lint"
+        "packages/**/*.{js,json}": "yarn run lint"
     }
 }
