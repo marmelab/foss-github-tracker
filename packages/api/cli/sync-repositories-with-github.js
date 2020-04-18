@@ -9,21 +9,6 @@ const { getDbClient } = require('../src/toolbox/dbConnexion');
 
 const pgClient = getDbClient();
 
-const createNewRepository = async (pgClient, data) => {
-    try {
-        await pgClient('repositories').insert(data);
-    } catch (error) {
-        signale.error('Error with repo. creation: ', error.message);
-    }
-};
-const updateRepository = async (pgClient, id, data) => {
-    try {
-        await pgClient('repositories').update(data).where({ id });
-    } catch (error) {
-        signale.error('Error with repo. update: ', error.message);
-    }
-};
-
 const githubRepositoriesSynchronization = async () => {
     signale.info('Ok Github: start repositories synchronization');
     const repositories = await pgClient('repositories').select(
@@ -31,7 +16,8 @@ const githubRepositoriesSynchronization = async () => {
         'githubId',
         'name'
     );
-    let newRepo = 0;
+    let newRepo = [];
+    let maintainedRepo = [];
     await gitHubClient.repos
         .listForOrg({
             org: 'marmelab',
@@ -40,19 +26,14 @@ const githubRepositoriesSynchronization = async () => {
             sort: 'created_at',
         })
         .then((ghResponse) => {
-            ghResponse.data.map(async (repo) => {
+            ghResponse.data.map((repo) => {
                 const existingRepo = repositories.find(
                     (r) => r.githubId === repo.node_id
                 );
                 if (!existingRepo) {
-                    await createNewRepository(pgClient, convertForSave(repo));
-                    newRepo++;
+                    newRepo.push(convertForSave(repo));
                 } else {
-                    await updateRepository(
-                        pgClient,
-                        existingRepo.id,
-                        convertForUpdate(repo)
-                    );
+                    maintainedRepo.push(convertForUpdate(repo, existingRepo));
                 }
             });
         });
@@ -70,21 +51,29 @@ const githubRepositoriesSynchronization = async () => {
                     (r) => r.githubId === repo.node_id
                 );
                 if (!existingRepo) {
-                    await createNewRepository(pgClient, convertForSave(repo));
-                    newRepo++;
+                    newRepo.push(convertForSave(repo));
                 } else {
-                    await updateRepository(
-                        pgClient,
-                        existingRepo.id,
-                        convertForSave(repo)
-                    );
+                    maintainedRepo.push(convertForUpdate(repo, existingRepo));
                 }
             });
         });
-    if (newRepo) {
-        signale.info(`${newRepo} new repository have been created.`);
+
+    if (newRepo.length) {
+        await pgClient.batchInsert('repositories', newRepo);
+        signale.info(`${newRepo.length} new repository have been created.`);
     } else {
         signale.info('All repositories was present in database');
+    }
+
+    if (maintainedRepo.length) {
+        const updates = maintainedRepo.map((repo) =>
+            pgClient
+                .update(repo)
+                .from('repositories')
+                .where({ githubId: repo.githubId })
+        );
+        await Promise.all(updates);
+        signale.info(`${maintainedRepo.length} repositories have been update.`);
     }
 
     return 'ok';
