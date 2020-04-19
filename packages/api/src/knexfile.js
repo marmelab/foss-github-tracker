@@ -1,5 +1,5 @@
 const config = require('./config');
-const knexStringcase = require('knex-stringcase');
+// const knexStringcase = require('knex-stringcase');
 const { attachPaginate } = require('knex-paginate');
 
 attachPaginate();

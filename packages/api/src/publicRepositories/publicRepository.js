@@ -18,5 +18,6 @@ const decisions = [
 
 module.exports = {
     NONE,
+    MAINTAINED,
     decisions,
 };

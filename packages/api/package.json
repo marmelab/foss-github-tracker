@@ -1,0 +1,31 @@
+{
+    "name": "prot-api",
+    "version": "0.1.0",
+    "description": "Backend part of prot project",
+    "scripts": {
+        "start": "nodemon --watch src src/index.js",
+        "test": "jest",
+        "test:watch": "jest --watchAll"
+    },
+    "dependencies": {
+        "@octokit/rest": "17.3.0",
+        "convict": "5.2.0",
+        "knex-paginate": "1.2.0",
+        "knex-stringcase": "1.4.1",
+        "knex": "0.20.15",
+        "koa-bodyparser": "4.3.0",
+        "koa-json-error": "3.1.2",
+        "koa-router": "8.0.8",
+        "koa-static": "5.0.0",
+        "koa": "2.11.0",
+        "koa2-cors": "2.0.6",
+        "lodash.omit": "4.5.0",
+        "lodash.pick": "4.4.0",
+        "pg": "8.0.2",
+        "querystring": "0.2.0",
+        "signale": "1.4.0"
+    },
+    "devDependencies": {
+        "nodemon": "2.0.3"
+    }
+}
