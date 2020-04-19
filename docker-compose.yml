@@ -7,7 +7,7 @@ services:
     working_dir: "/admin"
     user: ${CURRENT_UID}
     ports:
-      - 3001:3000
+      - 8000:3000
     env_file:
       - ./config/${NODE_ENV}.env
     command: "yarn start"
@@ -36,15 +36,13 @@ services:
 
   postgres:
     image: postgres:10
-    environment:
-      - POSTGRES_USER=alexisjanvier
-      - POSTGRES_PASSWORD=alexisjanvier
-      - POSTGRES_DB=foss_analyse
-      - PGDATA=/var/lib/postgresql/data/pgdata
+    env_file:
+      - ./config/${NODE_ENV}.env
     ports:
       - 5432:5432
     volumes:
       - fossAnalyse-pg-data:/var/lib/postgresql/data/pgdata
       - ./dumps:/dumps
+      - ./db-scripts:/db-scripts
 volumes:
   fossAnalyse-pg-data:
