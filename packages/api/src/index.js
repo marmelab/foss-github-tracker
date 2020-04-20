@@ -7,6 +7,7 @@ const error = require('koa-json-error');
 
 const contributorRouter = require('./contributors/router');
 const repositoryRouter = require('./publicRepositories/router');
+const dashBoardRouter = require('./dashboard/router');
 
 const app = new Koa();
 
@@ -54,5 +55,6 @@ router.get('/api', (ctx) => {
 app.use(router.routes()).use(router.allowedMethods());
 app.use(contributorRouter.routes()).use(contributorRouter.allowedMethods());
 app.use(repositoryRouter.routes()).use(repositoryRouter.allowedMethods());
+app.use(dashBoardRouter.routes()).use(dashBoardRouter.allowedMethods());
 
 app.listen(3001, () => global.console.log('API started on port 3001'));
