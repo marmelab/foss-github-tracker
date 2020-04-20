@@ -1,4 +1,4 @@
-import UserIcon from '@material-ui/icons/People';
+import RepoIcon from '@material-ui/icons/GitHub';
 import List from './List';
 import Edit from './Edit';
 
@@ -24,6 +24,6 @@ export const decisions = [
 export default {
     list: List,
     edit: Edit,
-    icon: UserIcon,
+    icon: RepoIcon,
     options: { label: 'Public Repositories' }
 };
