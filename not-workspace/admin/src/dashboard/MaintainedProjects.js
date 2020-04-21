@@ -27,11 +27,8 @@ const Repositories = ({ repositories }) => {
         <div className={classes.main}>
             <CardIcon Icon={TrackedIcon} bgColor="#808080" />
             <Card className={classes.card}>
-                <Typography className={classes.title} color="textSecondary">
-                    { repositories.length }
-                </Typography>
                 <Typography variant="h5" component="h2">
-                    Maintained Repositories
+                    { repositories.length } Maintained Repositories
                 </Typography>
             </Card>
         </div>
