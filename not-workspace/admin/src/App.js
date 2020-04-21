@@ -11,6 +11,8 @@ const App = () => (
     <Admin dataProvider={dataProvider} dashboard={Dashboard}>
         <Resource name="repositories" {...repositories} />
         <Resource name="contributors" {...contributors} />
+        <Resource name="licenses" />
+        <Resource name="languages" />
     </Admin>
 );
 

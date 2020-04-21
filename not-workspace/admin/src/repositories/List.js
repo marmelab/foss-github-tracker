@@ -8,6 +8,7 @@ import {
     List,
     NumberField,
     ReferenceArrayField,
+    ReferenceInput,
     SelectInput,
     SingleFieldList,
     TextField,
@@ -55,6 +56,22 @@ const RepositoryFilters = (props) => (
             style={{ minWidth: 250 }}
             alwaysOn
         />
+        <ReferenceInput
+            label="License"
+            source="license"
+            reference="licenses"
+            alwaysOn
+        >
+            <SelectInput />
+        </ReferenceInput>
+        <ReferenceInput
+            label="Languages"
+            source="primaryLanguage"
+            reference="languages"
+            alwaysOn
+        >
+            <SelectInput />
+        </ReferenceInput>
         <TextInput
             source="name:%l%"
             label="Name"

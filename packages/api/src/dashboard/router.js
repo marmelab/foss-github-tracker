@@ -7,29 +7,17 @@ const {
     NONE,
 } = require('../publicRepositories/publicRepository');
 
-const router = new Router({
-    prefix: '/api/dashboard',
-});
-
 const getLicenses = (client) =>
     client('repositories').select('license').groupBy('license');
 
 const getLanguages = (client) =>
     client('repositories').select('primaryLanguage').groupBy('primaryLanguage');
 
-router.get('/languages', async (ctx) => {
-    const languages = await getLanguages(getDbClient());
-
-    ctx.body = languages;
+const dashboardRouter = new Router({
+    prefix: '/api/dashboard',
 });
 
-router.get('/licenses', async (ctx) => {
-    const licenses = await getLicenses(getDbClient());
-
-    ctx.body = licenses;
-});
-
-router.get('/', async (ctx) => {
+dashboardRouter.get('/', async (ctx) => {
     const client = getDbClient();
     const [
         repositories,
@@ -164,4 +152,34 @@ router.get('/', async (ctx) => {
     ctx.body = dashboard;
 });
 
-module.exports = router;
+const languageRouter = new Router({
+    prefix: '/api/languages',
+});
+languageRouter.get('/', async (ctx) => {
+    const languages = await getLanguages(getDbClient());
+
+    ctx.set('X-Total-Count', languages.length);
+    ctx.body = languages.map((language) => ({
+        id: language.primaryLanguage,
+        name: language.primaryLanguage,
+    }));
+});
+
+const licenseRouter = new Router({
+    prefix: '/api/licenses',
+});
+licenseRouter.get('/', async (ctx) => {
+    const licenses = await getLicenses(getDbClient());
+
+    ctx.set('X-Total-Count', licenses.length);
+    ctx.body = licenses.map((license) => ({
+        id: license.license,
+        name: license.license,
+    }));
+});
+
+module.exports = {
+    dashboardRouter,
+    languageRouter,
+    licenseRouter,
+};

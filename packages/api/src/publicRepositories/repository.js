@@ -23,6 +23,7 @@ const filterableFields = [
     'id',
     'name',
     'license',
+    'primaryLanguage',
     'isArchived',
     'isGame',
     'decision',
@@ -30,6 +31,7 @@ const filterableFields = [
 const sortableFields = [
     'name',
     'license',
+    'primaryLanguage',
     'starsNumber',
     'forkNumber',
     'openIssuesNumber',
