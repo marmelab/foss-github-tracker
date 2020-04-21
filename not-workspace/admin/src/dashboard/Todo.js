@@ -45,7 +45,7 @@ const Todo = ({ archives, decisions, warnings }) => {
     }
 
     const openGitHub = (name) =>  {
-        var win = window.open(`https://github.com/marmelab/${name}`, '_blank');
+        window.open(`https://github.com/marmelab/${name}`, '_blank');
     }
 
     return (
