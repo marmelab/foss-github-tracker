@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import { Button } from '@material-ui/core';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import { useDataProvider, Title } from 'react-admin';
+
+import Total from './Total';
+import Todo from './Todo';
+import Statistics from './Statistics';
+import MaintainedProjects from './MaintainedProjects';
 
 const Dashboard = () => {
     const useStyles = makeStyles((theme) => ({
@@ -33,36 +35,36 @@ const Dashboard = () => {
         getDataForDashboard();
     }, []);
 
+    if (!data) {
+        return (
+            <div className={classes.root}>
+                <Title>Public Repositories Tracker</Title>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <Paper className={classes.paper}>Loading data</Paper>
+                    </Grid>
+                </Grid>
+            </div>
+        )
+    }
+
     return (
         <div className={classes.root}>
-            <Card>
-                <Title title="Public RepOsitories Tracking (Marmelab's GitHub)" />
-                <CardContent>{data ? `There is ${data.statistics.total} public repositories` : 'Loading data ....'}</CardContent>
-            </Card>
+            <Title>Public Repositories Tracker</Title>
             <Grid container spacing={3}>
-                <Grid item xs={6}>
-                    <p>Something</p>
+                <Grid item xs={4}>
+                    <Total value={data.statistics.total} />
+                    <Todo
+                        warnings={data.maintainedRepositoriesWarning}
+                        archives={data.unMaintainedRepositoriesUnArchived}
+                        decisions={data.repositoriesWithoutDecisions}
+                    />
                 </Grid>
-                <Grid item xs={6}>
-                    <p>Another Thing</p>
+                <Grid item xs={8}>
+                    <Statistics statistics={data.statistics} />
                 </Grid>
-            </Grid>
-            <Grid container spacing={3}>
-                <Grid item xs={11}>
-                    <Paper className={classes.paper}>
-                        <p>Paper</p>
-                    </Paper>
-                </Grid>
-            </Grid>
-            <Grid container spacing={3}>
-                <Grid item xs style={{ textAlign: 'center' }}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        href="#/repositories"
-                    >
-                        All repositories
-                    </Button>
+                <Grid item xs={12}>
+                    <MaintainedProjects repositories={data.maintainedRepositories} />
                 </Grid>
             </Grid>
         </div>
