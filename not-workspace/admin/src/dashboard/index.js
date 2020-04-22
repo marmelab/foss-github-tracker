@@ -6,7 +6,7 @@ import { useDataProvider, Title } from 'react-admin';
 
 import Total from './Total';
 import Todo from './Todo';
-import Statistics from './Statistics';
+import Statistics from './statistics';
 import MaintainedProjects from './MaintainedProjects';
 
 const Dashboard = () => {
