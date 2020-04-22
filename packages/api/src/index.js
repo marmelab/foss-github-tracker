@@ -7,6 +7,11 @@ const error = require('koa-json-error');
 
 const contributorRouter = require('./contributors/router');
 const repositoryRouter = require('./publicRepositories/router');
+const {
+    dashboardRouter,
+    licenseRouter,
+    languageRouter,
+} = require('./dashboard/router');
 
 const app = new Koa();
 
@@ -54,5 +59,8 @@ router.get('/api', (ctx) => {
 app.use(router.routes()).use(router.allowedMethods());
 app.use(contributorRouter.routes()).use(contributorRouter.allowedMethods());
 app.use(repositoryRouter.routes()).use(repositoryRouter.allowedMethods());
+app.use(dashboardRouter.routes()).use(dashboardRouter.allowedMethods());
+app.use(licenseRouter.routes()).use(licenseRouter.allowedMethods());
+app.use(languageRouter.routes()).use(languageRouter.allowedMethods());
 
 app.listen(3001, () => global.console.log('API started on port 3001'));
