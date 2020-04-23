@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    BooleanInput,
     Edit,
     ReferenceArrayInput,
     SelectArrayInput,
@@ -21,6 +22,7 @@ export default (props) => (
                 choices={decisions}
                 fullWidth
             />
+            <BooleanInput label="Is a React Admin Repository ?" source="isReactAdmin" />
             <ReferenceArrayInput
                 label="Maintainers"
                 source="maintainerids"

@@ -28,6 +28,7 @@ const filterableFields = [
     'isGame',
     'decision',
     'maintainer',
+    'isReactAdmin',
 ];
 const sortableFields = [
     'name',
@@ -69,6 +70,8 @@ const getFilteredQuery = (client, filters, sort) => {
         )
         .groupBy(`${tableName}.id`);
 
+    console.log('DEBUG FILTERS', filters);
+
     filters
         .map((filter) => {
             if (filter.name === 'maintainer') {
@@ -97,7 +100,7 @@ const getFilteredQuery = (client, filters, sort) => {
                     query.andWhere(filter.name, '>=', filter.value);
                     break;
                 case FILTER_OPERATOR_IN:
-                    query.whereIn(filter.name, JSON.parse(filter.value));
+                    query.whereIn(filter.name, filter.value);
                     break;
                 case FILTER_OPERATOR_PLP:
                     query.andWhere(filter.name, 'LIKE', `%${filter.value}%`);
@@ -115,7 +118,7 @@ const getFilteredQuery = (client, filters, sort) => {
             }
         });
 
-    if (sort && Object.keys(sort).length) {
+    if (sort && Object.keys(sort).length && sort.sortBy) {
         query.orderBy(sort.sortBy, sort.orderBy);
     }
 
@@ -186,14 +189,14 @@ const deleteOne = (id) => {
 
 const updateOne = async (id, data) => {
     const client = getDbClient();
-    const { maintainerids, decision } = data;
+    const { maintainerids, decision, isReactAdmin } = data;
 
     try {
         await client.transaction((trx) => {
             client(tableName)
                 .transacting(trx)
                 .where({ id })
-                .update({ decision })
+                .update({ decision, isReactAdmin })
                 .then(async () => {
                     if (maintainerids && maintainerids.length) {
                         await client('repository_maintainer')

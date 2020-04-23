@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     BooleanField,
+    BooleanInput,
     Datagrid,
     DateField,
     EditButton,
@@ -86,6 +87,7 @@ const RepositoryFilters = (props) => (
         >
             <SelectInput  optionText="login" />
         </ReferenceInput>
+        <BooleanInput label="React Admin Repo." source="isReactAdmin:eq" />
     </Filter>
 );
 

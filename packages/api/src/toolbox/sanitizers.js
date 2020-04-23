@@ -64,9 +64,22 @@ const filtersSanitizer = (filters, filterableFields) => {
             }
 
             const filterValue = filters[filterKey];
+            let value;
+            try {
+                switch (filterOperator) {
+                    case FILTER_OPERATOR_IN:
+                        JSON.parse(filterValue);
+                        break;
+                    default:
+                        value = filterValue;
+                }
+            } catch (error) {
+                return null;
+            }
+
             return {
                 name: filterName,
-                value: filterValue,
+                value,
                 operator:
                     !filterOperator || !filterOperators.includes(filterOperator)
                         ? FILTER_OPERATOR_EQ
