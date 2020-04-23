@@ -106,7 +106,7 @@ dashboardRouter.get('/', async (ctx) => {
         if (!repo.description || repo.description.trim() === '') {
             warnings.push('A maintained repository must have a description.');
         }
-        if (!repo.maintainerids.length) {
+        if (!repo.maintainerids.length || !repo.maintainerids[0]) {
             warnings.push(
                 'A maintained repository must have at least one maintainer.'
             );

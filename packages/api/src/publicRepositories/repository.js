@@ -145,7 +145,10 @@ const getPaginatedList = async ({ filters, sort, pagination }) => {
     return query
         .paginate({ perPage, currentPage, isLengthAware: true })
         .then((result) => ({
-            repositories: result.data,
+            repositories: result.data.map((repo) => ({
+                ...repo,
+                maintainersids: repo.maintainerids.filter((m) => m),
+            })),
             pagination: result.pagination,
         }));
 };
@@ -173,6 +176,15 @@ const getOne = async (id) => {
         )
         .groupBy(`${tableName}.id`)
         .where({ id })
+        .then((repo) => {
+            if (repo) {
+                return {
+                    ...repo,
+                    maintainerids: repo.maintainerids.filter((m) => m),
+                };
+            }
+            return repo;
+        })
         .catch((error) => ({ error }));
 };
 

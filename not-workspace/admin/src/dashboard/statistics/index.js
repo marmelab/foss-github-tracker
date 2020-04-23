@@ -40,7 +40,6 @@ const Statistics = ({ statistics }) => {
                     </Typography>
                 </CardContent>
                 <CardContent>
-                    <LanguageChart languageStatistics={statistics.languages} />
                     <DecisionChart rawData={statistics.decisions} total={statistics.total} />
                 </CardContent>
             </Card>
