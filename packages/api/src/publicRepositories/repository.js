@@ -27,6 +27,7 @@ const filterableFields = [
     'isArchived',
     'isGame',
     'decision',
+    'maintainer',
 ];
 const sortableFields = [
     'name',
@@ -68,41 +69,51 @@ const getFilteredQuery = (client, filters, sort) => {
         )
         .groupBy(`${tableName}.id`);
 
-    filters.map((filter) => {
-        switch (filter.operator) {
-            case FILTER_OPERATOR_EQ:
-                query.andWhere(filter.name, '=', filter.value);
-                break;
-            case FILTER_OPERATOR_LT:
-                query.andWhere(filter.name, '<', filter.value);
-                break;
-            case FILTER_OPERATOR_LTE:
-                query.andWhere(filter.name, '<=', filter.value);
-                break;
-            case FILTER_OPERATOR_GT:
-                query.andWhere(filter.name, '>', filter.value);
-                break;
-            case FILTER_OPERATOR_GTE:
-                query.andWhere(filter.name, '>=', filter.value);
-                break;
-            case FILTER_OPERATOR_IN:
-                query.whereIn(filter.name, JSON.parse(filter.value));
-                break;
-            case FILTER_OPERATOR_PLP:
-                query.andWhere(filter.name, 'LIKE', `%${filter.value}%`);
-                break;
-            case FILTER_OPERATOR_PL:
-                query.andWhere(filter.name, 'LIKE', `%${filter.value}`);
-                break;
-            case FILTER_OPERATOR_LP:
-                query.andWhere(filter.name, 'LIKE', `${filter.value}%`);
-                break;
-            default:
-                signale.log(
-                    `The filter operator ${filter.operator} is not managed`
-                );
-        }
-    });
+    filters
+        .map((filter) => {
+            if (filter.name === 'maintainer') {
+                return {
+                    ...filter,
+                    name: 'repository_maintainer.contributor_id',
+                };
+            }
+            return filter;
+        })
+        .map((filter) => {
+            switch (filter.operator) {
+                case FILTER_OPERATOR_EQ:
+                    query.andWhere(filter.name, '=', filter.value);
+                    break;
+                case FILTER_OPERATOR_LT:
+                    query.andWhere(filter.name, '<', filter.value);
+                    break;
+                case FILTER_OPERATOR_LTE:
+                    query.andWhere(filter.name, '<=', filter.value);
+                    break;
+                case FILTER_OPERATOR_GT:
+                    query.andWhere(filter.name, '>', filter.value);
+                    break;
+                case FILTER_OPERATOR_GTE:
+                    query.andWhere(filter.name, '>=', filter.value);
+                    break;
+                case FILTER_OPERATOR_IN:
+                    query.whereIn(filter.name, JSON.parse(filter.value));
+                    break;
+                case FILTER_OPERATOR_PLP:
+                    query.andWhere(filter.name, 'LIKE', `%${filter.value}%`);
+                    break;
+                case FILTER_OPERATOR_PL:
+                    query.andWhere(filter.name, 'LIKE', `%${filter.value}`);
+                    break;
+                case FILTER_OPERATOR_LP:
+                    query.andWhere(filter.name, 'LIKE', `${filter.value}%`);
+                    break;
+                default:
+                    signale.log(
+                        `The filter operator ${filter.operator} is not managed`
+                    );
+            }
+        });
 
     if (sort && Object.keys(sort).length) {
         query.orderBy(sort.sortBy, sort.orderBy);

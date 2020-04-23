@@ -58,7 +58,7 @@ const RepositoryFilters = (props) => (
         />
         <ReferenceInput
             label="License"
-            source="license"
+            source="license:eq"
             reference="licenses"
             alwaysOn
         >
@@ -66,7 +66,7 @@ const RepositoryFilters = (props) => (
         </ReferenceInput>
         <ReferenceInput
             label="Languages"
-            source="primaryLanguage"
+            source="primaryLanguage:eq"
             reference="languages"
             alwaysOn
         >
@@ -78,6 +78,14 @@ const RepositoryFilters = (props) => (
             style={{ minWidth: 250 }}
             alwaysOn
         />
+        <ReferenceInput
+            label="Maintainer"
+            source="maintainer:eq"
+            reference="contributors"
+            alwaysOn
+        >
+            <SelectInput  optionText="login" />
+        </ReferenceInput>
     </Filter>
 );
 
