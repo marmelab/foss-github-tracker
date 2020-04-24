@@ -97,7 +97,7 @@ dashboardRouter.get('/', async (ctx) => {
         if (!repo.license || repo.license === 'none') {
             warnings.push('A maintained repository must have a license.');
         }
-        if (!repo.description || repo.description.trim() === '') {
+        if (!repo.description || repo.description.trim() === 'no description') {
             warnings.push('A maintained repository must have a description.');
         }
         if (repo.homepage === 'none') {
@@ -120,9 +120,14 @@ dashboardRouter.get('/', async (ctx) => {
             const warnings = getMaintainedRepositoryWarnings(repo);
             dashboard.maintainedRepositories.push({
                 ...repo,
-                maintainers: repo.maintainerids.map((id) =>
-                    contributors.find((contributor) => contributor.id === id)
-                ),
+                maintainers:
+                    repo.maintainerids.length && repo.maintainerids[0]
+                        ? repo.maintainerids.map((id) =>
+                              contributors.find(
+                                  (contributor) => contributor.id === id
+                              )
+                          )
+                        : null,
                 warnings,
             });
             if (warnings) {
