@@ -38,7 +38,7 @@ const Dashboard = () => {
     if (!data) {
         return (
             <div className={classes.root}>
-                <Title>Public Repositories Tracker</Title>
+                <Title title="Public Repositories Tracker"/>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>Loading data</Paper>
@@ -50,7 +50,7 @@ const Dashboard = () => {
 
     return (
         <div className={classes.root}>
-            <Title>Public Repositories Tracker</Title>
+            <Title title="Public Repositories Tracker"/>
             <Grid container spacing={3}>
                 <Grid item xs={4}>
                     <Total value={data.statistics.total} />

@@ -4,6 +4,7 @@ import CardContent from '@material-ui/core/CardContent';
 import ChartIcon from '@material-ui/icons/PieChart';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 
 import CardIcon from '../CardIcon';
 import DecisionChart from './Decisions';
@@ -26,6 +27,12 @@ const useStyles = makeStyles({
         minHeight: 52,
     },
     title: {},
+    statisticsTitle: {
+        textAlign: 'center',
+        margin: '2rem',
+        textDecoration: 'underline',
+        fontWeight: 600,
+    }
 });
 
 const Statistics = ({ statistics }) => {
@@ -40,10 +47,23 @@ const Statistics = ({ statistics }) => {
                     </Typography>
                 </CardContent>
                 <CardContent>
-                    <DecisionChart rawData={statistics.decisions} total={statistics.total} />
+                    <Grid container spacing={0}>
+                        <Grid item xs={6}>
+                            <Typography variant="h6" component="h5" className={classes.statisticsTitle}>
+                                Status
+                            </Typography>
+                            <DecisionChart rawData={statistics.decisions} total={statistics.total} />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography variant="h6" component="h5" className={classes.statisticsTitle}>
+                                Languages
+                            </Typography>
+                            <LanguageChart rawData={statistics.languages} />
+                        </Grid>
+                    </Grid>
                 </CardContent>
-            </Card>
-        </div>
+                </Card>
+            </div>
     );
 };
 
