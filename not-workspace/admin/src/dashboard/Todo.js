@@ -40,12 +40,7 @@ const Todo = ({ archives, decisions, warnings }) => {
         redirect(`/repositories?filter={"decision"%3A"none"}&page=1&perPage=${decisions.length}`);
 
     const handleUnArchived = () => {//http://localhost:8000/#/repositories?filter={%22id:in%22%3A%22[163,%20100]%22}
-        const ids = archives.map(repo => repo.id);
-        redirect(`/repositories?filter={"d:in"%3A${JSON.stringify(ids)}&page=1&perPage=${archives.length}`);
-    }
-
-    const openGitHub = (name) =>  {
-        window.open(`https://github.com/marmelab/${name}`, '_blank');
+        redirect(`/repositories?filter={"d:in"%3A${JSON.stringify(archives)}&page=1&perPage=${archives.length}`);
     }
 
     return (
@@ -75,16 +70,6 @@ const Todo = ({ archives, decisions, warnings }) => {
                                 {`${warnings.length} maintained repositories need love.`}
                             </Typography>
                         </ListItem>
-                    </List>
-                    <List component="div" disablePadding>
-                        { warnings.length > 0 && warnings.map((repo) => (
-                            <ListItem key={repo.id} button className={classes.nested} onClick={() => openGitHub(repo.name)}>
-                                <Typography variant="h6" component="h6">
-                                    * {repo.name} <span style={{ fontSize: '0.8rem', fontStyle: 'italic' }}>
-                                        ({repo.warnings.join(' ')}) </span>
-                                </Typography>
-                            </ListItem>
-                        ))}
                     </List>
                 </CardContent>
             </Card>

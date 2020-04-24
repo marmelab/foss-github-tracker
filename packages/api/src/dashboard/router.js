@@ -76,20 +76,14 @@ dashboardRouter.get('/', async (ctx) => {
             licenses: licenses.reduce(
                 (acc, license) => ({
                     ...acc,
-                    [license.license]: {
-                        total: 0,
-                        byDecision: { ...decisionsContainer },
-                    },
+                    [license.license]: 0,
                 }),
                 { total: licenses.length }
             ),
             languages: languages.reduce(
                 (acc, language) => ({
                     ...acc,
-                    [language.primaryLanguage]: {
-                        total: 0,
-                        byDecision: { ...decisionsContainer },
-                    },
+                    [language.primaryLanguage]: 0,
                 }),
                 { total: languages.length }
             ),
@@ -106,6 +100,9 @@ dashboardRouter.get('/', async (ctx) => {
         if (!repo.description || repo.description.trim() === '') {
             warnings.push('A maintained repository must have a description.');
         }
+        if (repo.homepage === 'none') {
+            warnings.push('A maintained repository should have a homepage.');
+        }
         if (!repo.maintainerids.length || !repo.maintainerids[0]) {
             warnings.push(
                 'A maintained repository must have at least one maintainer.'
@@ -117,12 +114,8 @@ dashboardRouter.get('/', async (ctx) => {
 
     repositories.map((repo) => {
         dashboard.statistics.decisions[repo.decision]++;
-        dashboard.statistics.licenses[repo.license].total++;
-        dashboard.statistics.licenses[repo.license].byDecision[repo.decision]++;
-        dashboard.statistics.languages[repo.primaryLanguage].total++;
-        dashboard.statistics.languages[repo.primaryLanguage].byDecision[
-            repo.decision
-        ]++;
+        dashboard.statistics.licenses[repo.license]++;
+        dashboard.statistics.languages[repo.primaryLanguage]++;
         if (isMaintainedRepository(repo)) {
             const warnings = getMaintainedRepositoryWarnings(repo);
             dashboard.maintainedRepositories.push({
@@ -133,17 +126,14 @@ dashboardRouter.get('/', async (ctx) => {
                 warnings,
             });
             if (warnings) {
-                dashboard.maintainedRepositoriesWarning.push({
-                    ...repo,
-                    warnings,
-                });
+                dashboard.maintainedRepositoriesWarning.push(repo.id);
             }
         } else {
             if (hasNoDecision(repo)) {
-                dashboard.repositoriesWithoutDecisions.push(repo);
+                dashboard.repositoriesWithoutDecisions.push(repo.id);
             }
             if (!repo.isArchived) {
-                dashboard.unMaintainedRepositoriesUnArchived.push(repo);
+                dashboard.unMaintainedRepositoriesUnArchived.push(repo.id);
             }
         }
     });

@@ -14,7 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 const prepareDataForRadar = (rawData, filter = 'dotNotFilter') => {
     const { total, ...languages } = rawData;
     return Object.keys(languages).map((language) => ({
-        value: languages[language].total,
+        value: languages[language],
         name: language,
         fullMark: total,
     })).sort((a,b) => {
