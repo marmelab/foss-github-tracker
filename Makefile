@@ -27,4 +27,10 @@ init-db-if-you-are-really-sure: ## Delete existing db if exist and create a new 
 dump-db: ## Create dump and replace the last one. Environment must be started
 	docker-compose exec postgres bash -ci '/db-scripts/dump-db.sh'
 
+sync-github: sync-github-repositories sync-github-team dump-db ## Synchronise db with last github data
 
+sync-github-repositories: ## Synchronise db with last github data about public repositories
+	docker-compose exec api bash -ci 'node ./cli/sync-repositories-with-github.js'
+
+sync-github-team: ## Synchronise db with last github data about dev team
+	docker-compose exec api bash -ci 'node ./cli/sync-contributors-with-github.js'
