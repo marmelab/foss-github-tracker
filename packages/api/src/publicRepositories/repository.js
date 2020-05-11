@@ -234,6 +234,12 @@ const updateOne = async (id, data) => {
 
                         return Promise.all(linksToCreate);
                     }
+                    if (!maintainerids || !maintainerids.length) {
+                        await client('repository_maintainer')
+                            .transacting(trx)
+                            .del()
+                            .where({ repository_id: id });
+                    }
 
                     return true;
                 })
