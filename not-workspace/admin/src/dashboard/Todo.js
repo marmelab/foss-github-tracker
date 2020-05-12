@@ -54,11 +54,13 @@ const Todo = ({ archives, decisions, warnings }) => {
                 </CardContent>
                 <CardContent>
                     <List component="nav" className={classes.list}>
-                        <ListItem button onClick={handleUnDecisions} >
-                            <Typography variant="h6" component="h3">
-                                {`${decisions.length} repositories have no status`}
-                            </Typography>
-                        </ListItem>
+                        {decisions.length > 0 && (
+                            <ListItem button onClick={handleUnDecisions} >
+                                <Typography variant="h6" component="h3">
+                                    {`${decisions.length} repositories have no status`}
+                                </Typography>
+                            </ListItem>
+                        )}
                         <Divider />
                         <ListItem button divider onClick={handleUnArchived}>
                             <Typography variant="h6" component="h3">
