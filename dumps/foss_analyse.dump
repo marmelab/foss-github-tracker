@@ -46,7 +46,8 @@ CREATE TABLE public.contributors (
     login character varying(255),
     name character varying(255),
     "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL
+    "updatedAt" timestamp with time zone NOT NULL,
+    "isActive" boolean DEFAULT true
 );
 
 
@@ -162,23 +163,23 @@ ALTER TABLE ONLY public.repositories ALTER COLUMN id SET DEFAULT nextval('public
 -- Data for Name: contributors; Type: TABLE DATA; Schema: public; Owner: alexisjanvier
 --
 
-COPY public.contributors (id, "githubId", "avatarUrl", email, login, name, "createdAt", "updatedAt") FROM stdin;
-1	MDQ6VXNlcjU0NzcwNg==	https://avatars0.githubusercontent.com/u/547706?v=4	contact@alexisjanvier.net	alexisjanvier	Alexis Janvier	2019-04-12 12:25:29.367+00	2019-04-12 12:25:29.367+00
-2	MDQ6VXNlcjExMjIwNzY=	https://avatars2.githubusercontent.com/u/1122076?v=4		djhi	Gildas Garcia	2019-04-12 12:25:48.049+00	2019-04-12 12:25:48.049+00
-3	MDQ6VXNlcjI1NjIyNzA=	https://avatars0.githubusercontent.com/u/2562270?v=4		floo51	Florian F.	2019-04-12 12:26:04.184+00	2019-04-12 12:26:04.184+00
-4	MDQ6VXNlcjEwNjQ3ODA=	https://avatars0.githubusercontent.com/u/1064780?v=4	julien@marmelab.com	jdemangeon	Julien Demangeon	2019-04-12 12:26:20.571+00	2019-04-12 12:26:20.571+00
-5	MDQ6VXNlcjk5OTQ0	https://avatars3.githubusercontent.com/u/99944?v=4		fzaninotto	Francois Zaninotto	2019-04-12 12:26:40.172+00	2019-04-12 12:26:40.172+00
-6	MDQ6VXNlcjM5OTA0OTA2	https://avatars2.githubusercontent.com/u/39904906?v=4		JulienMattiussi	JulienM	2019-04-12 12:26:54.706+00	2019-04-12 12:26:54.706+00
-7	MDQ6VXNlcjE4MTk4MzM=	https://avatars2.githubusercontent.com/u/1819833?v=4		Kmaschta	Kmaschta	2019-04-12 12:27:13.073+00	2019-04-12 12:27:13.073+00
-8	MDQ6VXNlcjU1ODQ4Mzk=	https://avatars3.githubusercontent.com/u/5584839?v=4	adrien.amoros@gmail.com	Luwangel	Adrien Amoros	2019-04-12 12:27:27.539+00	2019-04-12 12:27:27.539+00
-9	MDQ6VXNlcjEwOTAwMjU=	https://avatars3.githubusercontent.com/u/1090025?v=4	pierre-etienne.moreau@loria.fr	pemoreau	Pierre-Etienne Moreau	2019-04-12 12:27:41.842+00	2019-04-12 12:27:41.842+00
-10	MDQ6VXNlcjQwMzQzOTk=	https://avatars2.githubusercontent.com/u/4034399?v=4		ThieryMichel		2019-04-12 12:27:58.883+00	2019-04-12 12:27:58.883+00
-11	MDQ6VXNlcjIyMTIxNDQ=	https://avatars3.githubusercontent.com/u/2212144?v=4		zyhou	Maxime Richard	2019-04-12 12:28:15.538+00	2019-04-12 12:28:15.538+00
-12	MDQ6VXNlcjkyNTA0NzA=	https://avatars3.githubusercontent.com/u/9250470?v=4	\N	Chroq	Chroq	2020-04-18 08:24:10.508+00	2020-04-18 08:24:10.508+00
-13	MDQ6VXNlcjYwMzA5NDM=	https://avatars0.githubusercontent.com/u/6030943?v=4	\N	HALLERPierre	HALLERPierre	2020-04-18 08:24:10.509+00	2020-04-18 08:24:10.509+00
-14	MDQ6VXNlcjYzMzA0MDg1	https://avatars1.githubusercontent.com/u/63304085?v=4	\N	jeremiegst	jeremiegst	2020-04-18 08:24:10.509+00	2020-04-18 08:24:10.509+00
-15	MDQ6VXNlcjQ5MjE5MjY=	https://avatars3.githubusercontent.com/u/4921926?v=4	\N	mchaffotte	mchaffotte	2020-04-18 08:24:10.509+00	2020-04-18 08:24:10.509+00
-16	MDQ6VXNlcjIzMTE2ODkw	https://avatars3.githubusercontent.com/u/23116890?v=4	\N	sedy-bot	sedy-bot	2020-04-18 08:24:10.509+00	2020-04-18 08:24:10.509+00
+COPY public.contributors (id, "githubId", "avatarUrl", email, login, name, "createdAt", "updatedAt", "isActive") FROM stdin;
+1	MDQ6VXNlcjU0NzcwNg==	https://avatars0.githubusercontent.com/u/547706?v=4	contact@alexisjanvier.net	alexisjanvier	Alexis Janvier	2019-04-12 12:25:29.367+00	2019-04-12 12:25:29.367+00	t
+2	MDQ6VXNlcjExMjIwNzY=	https://avatars2.githubusercontent.com/u/1122076?v=4		djhi	Gildas Garcia	2019-04-12 12:25:48.049+00	2019-04-12 12:25:48.049+00	t
+3	MDQ6VXNlcjI1NjIyNzA=	https://avatars0.githubusercontent.com/u/2562270?v=4		floo51	Florian F.	2019-04-12 12:26:04.184+00	2019-04-12 12:26:04.184+00	t
+4	MDQ6VXNlcjEwNjQ3ODA=	https://avatars0.githubusercontent.com/u/1064780?v=4	julien@marmelab.com	jdemangeon	Julien Demangeon	2019-04-12 12:26:20.571+00	2019-04-12 12:26:20.571+00	t
+5	MDQ6VXNlcjk5OTQ0	https://avatars3.githubusercontent.com/u/99944?v=4		fzaninotto	Francois Zaninotto	2019-04-12 12:26:40.172+00	2019-04-12 12:26:40.172+00	t
+6	MDQ6VXNlcjM5OTA0OTA2	https://avatars2.githubusercontent.com/u/39904906?v=4		JulienMattiussi	JulienM	2019-04-12 12:26:54.706+00	2019-04-12 12:26:54.706+00	t
+7	MDQ6VXNlcjE4MTk4MzM=	https://avatars2.githubusercontent.com/u/1819833?v=4		Kmaschta	Kmaschta	2019-04-12 12:27:13.073+00	2019-04-12 12:27:13.073+00	t
+8	MDQ6VXNlcjU1ODQ4Mzk=	https://avatars3.githubusercontent.com/u/5584839?v=4	adrien.amoros@gmail.com	Luwangel	Adrien Amoros	2019-04-12 12:27:27.539+00	2019-04-12 12:27:27.539+00	t
+9	MDQ6VXNlcjEwOTAwMjU=	https://avatars3.githubusercontent.com/u/1090025?v=4	pierre-etienne.moreau@loria.fr	pemoreau	Pierre-Etienne Moreau	2019-04-12 12:27:41.842+00	2019-04-12 12:27:41.842+00	t
+10	MDQ6VXNlcjQwMzQzOTk=	https://avatars2.githubusercontent.com/u/4034399?v=4		ThieryMichel		2019-04-12 12:27:58.883+00	2019-04-12 12:27:58.883+00	t
+11	MDQ6VXNlcjIyMTIxNDQ=	https://avatars3.githubusercontent.com/u/2212144?v=4		zyhou	Maxime Richard	2019-04-12 12:28:15.538+00	2019-04-12 12:28:15.538+00	t
+13	MDQ6VXNlcjYwMzA5NDM=	https://avatars0.githubusercontent.com/u/6030943?v=4	\N	HALLERPierre	HALLERPierre	2020-04-18 08:24:10.509+00	2020-04-18 08:24:10.509+00	t
+15	MDQ6VXNlcjQ5MjE5MjY=	https://avatars3.githubusercontent.com/u/4921926?v=4	\N	mchaffotte	mchaffotte	2020-04-18 08:24:10.509+00	2020-04-18 08:24:10.509+00	t
+12	MDQ6VXNlcjkyNTA0NzA=	https://avatars3.githubusercontent.com/u/9250470?v=4	\N	Chroq	Chroq	2020-04-18 08:24:10.508+00	2020-04-18 08:24:10.508+00	f
+14	MDQ6VXNlcjYzMzA0MDg1	https://avatars1.githubusercontent.com/u/63304085?v=4	\N	jeremiegst	jeremiegst	2020-04-18 08:24:10.509+00	2020-04-18 08:24:10.509+00	f
+16	MDQ6VXNlcjIzMTE2ODkw	https://avatars3.githubusercontent.com/u/23116890?v=4	\N	sedy-bot	sedy-bot	2020-04-18 08:24:10.509+00	2020-04-18 08:24:10.509+00	f
 \.
 
 
@@ -246,6 +247,7 @@ COPY public.repositories (id, "githubId", name, description, "primaryLanguage", 
 135	MDEwOlJlcG9zaXRvcnkyNTQ1ODI3Mw==	koa-multifetch	A Koa.js middleware for performing internal batch requests	JavaScript	1	MIT License	https://github.com/marmelab/koa-multifetch	none	37	1	3	1	37	t	f	f	2014-10-20 08:54:04+00	2019-04-17 14:22:10+00	2019-12-16 08:47:31+00	archived	f	t	f
 80	MDEwOlJlcG9zaXRvcnkyNDEzNjI5Mg==	go-deploy	A webservice commenting all pull requests contained on a deployment to a given target. 	Go	1	none	https://github.com/marmelab/go-deploy	none	0	0	8	0	0	t	f	f	2014-09-17 08:26:44+00	2019-04-17 11:35:05+00	2019-04-17 14:28:31+00	onboarding	f	t	f
 160	MDEwOlJlcG9zaXRvcnkyMDA1OTM2MQ==	ng-admin	Add an AngularJS admin GUI to any RESTful API	JavaScript	5	MIT License	https://github.com/marmelab/ng-admin	http://ng-admin-book.marmelab.com/	3997	758	111	27	3997	f	f	f	2014-05-22 12:00:10+00	2019-03-29 07:08:33+00	2020-05-10 22:32:22+00	transmitted	f	f	f
+206	MDEwOlJlcG9zaXRvcnkzMDMxMDU1NA==	builtwith.angularjs.org	builtwith.angularjs.org	JavaScript	0	none	https://api.github.com/repos/marmelab/builtwith.angularjs.org	none	0	0	0	0	0	f	f	f	2015-02-04 17:09:32+00	2015-02-04 17:21:55+00	2015-02-04 17:09:33+00	archived	f	f	f
 95	MDEwOlJlcG9zaXRvcnkxMjMwODIzNg==	menu-o-matic	Create and manage menus using a WYSIWYG interface	JavaScript	2	none	https://github.com/marmelab/menu-o-matic	http://marmelab.github.io/menu-o-matic/	1	0	1	1	1	f	f	f	2013-08-22 21:19:47+00	2014-08-28 08:16:49+00	2016-02-26 05:59:27+00	publication	f	f	f
 118	MDEwOlJlcG9zaXRvcnkxMDU5NTE0Nw==	Asteroids.js	A one day experiment to bringing the Asteroids game to the browser, using a mobile device as controller, Node.js, Raphaël, and socket.io.	JavaScript	1	none	https://github.com/marmelab/Asteroids.js	none	8	2	0	0	8	t	f	f	2013-06-10 07:05:36+00	2013-06-12 07:48:24+00	2019-02-08 16:55:22+00	archived	f	t	f
 187	MDEwOlJlcG9zaXRvcnkxOTM3MTc0MTg=	quixo-isomorphic	no description	JavaScript	0	MIT License	https://api.github.com/repos/marmelab/quixo-isomorphic	none	0	0	1	0	0	t	f	f	2019-06-25 13:52:41+00	2020-05-11 11:27:41+00	2020-05-11 11:27:58+00	onboarding	f	f	f
@@ -274,7 +276,6 @@ COPY public.repositories (id, "githubId", name, description, "primaryLanguage", 
 159	MDEwOlJlcG9zaXRvcnkzNTIwNDIzNQ==	awesome-rest	A collaborative list of great resources about RESTful API architecture, development, test, and performance	none	0	none	https://github.com/marmelab/awesome-rest	none	2429	309	10	7	2429	f	f	f	2015-05-07 07:04:42+00	2020-04-23 16:26:27+00	2020-05-11 12:05:33+00	maintained	f	t	f
 128	MDEwOlJlcG9zaXRvcnkzMzkxODUwMA==	uptime	A prototype of website monitoring tool, written in Go and React.js, modeled after fzaninotto/uptime	JavaScript	5	none	https://github.com/marmelab/uptime	none	16	5	4	2	16	t	f	f	2015-04-14 07:55:37+00	2019-04-17 16:39:06+00	2019-04-17 16:39:22+00	archived	f	t	f
 142	MDEwOlJlcG9zaXRvcnkzMDg2NDk3MQ==	NgAdminGeneratorBundle	Generate a client-side admin backend for Symfony2 applications, powered by ng-admin and LemonRestBundle	PHP	2	MIT License	https://github.com/marmelab/NgAdminGeneratorBundle	none	77	12	7	1	77	t	f	f	2015-02-16 11:15:32+00	2019-05-04 07:39:23+00	2019-08-13 16:03:11+00	archived	f	t	f
-206	MDEwOlJlcG9zaXRvcnkzMDMxMDU1NA==	builtwith.angularjs.org	builtwith.angularjs.org	JavaScript	0	none	https://api.github.com/repos/marmelab/builtwith.angularjs.org	none	0	0	0	0	0	f	f	f	2015-02-04 17:09:32+00	2015-02-04 17:21:55+00	2015-02-04 17:09:33+00	archived	f	f	f
 148	MDEwOlJlcG9zaXRvcnkyODAzMDcwNA==	microrest.php	A micro web application providing a REST API on top of any relational database, using Silex and Doctrine DBAL	PHP	5	MIT License	https://github.com/marmelab/microrest.php	http://marmelab.com/blog/2015/01/05/introducing-microrest-raml-api-in-silex.html	190	24	8	4	190	t	f	f	2014-12-15 09:58:20+00	2019-04-17 11:30:05+00	2020-01-24 16:50:31+00	archived	f	t	f
 126	MDEwOlJlcG9zaXRvcnkyMzEwMTg1MQ==	ng-tree	An Angular.js module for using tree.js	JavaScript	2	none	https://github.com/marmelab/ng-tree	none	12	4	0	0	12	t	f	f	2014-08-19 08:00:07+00	2019-04-17 15:02:11+00	2019-04-17 15:02:38+00	archived	f	t	f
 130	MDEwOlJlcG9zaXRvcnkxNjQxMzg4NQ==	chrome-bug-report-wizard	Chrome plugin automating Bug Tracker issue creation with screenshot and browser details	JavaScript	2	MIT License	https://github.com/marmelab/chrome-bug-report-wizard	none	23	5	0	0	23	t	f	f	2014-01-31 16:46:32+00	2019-05-04 07:41:10+00	2020-04-24 14:57:38+00	archived	f	t	f

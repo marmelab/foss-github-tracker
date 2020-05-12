@@ -44,6 +44,7 @@ const getFilteredQuery = (client, filters, sort) => {
             `${tableName}.id`,
             'repository_maintainer.contributor_id'
         )
+        .where({ isActive: true })
         .groupBy(`${tableName}.id`);
 
     filters.map((filter) => {
@@ -99,19 +100,34 @@ const getFilteredQuery = (client, filters, sort) => {
  */
 const getPaginatedList = async ({ filters, sort, pagination }) => {
     const sanitizedSort = sortSanitizer(sort, sortableFields);
+    const client = getDbClient();
     const query = getFilteredQuery(
-        getDbClient(),
+        client,
         filtersSanitizer(filters, filterableFields),
         sanitizedSort
     );
     const { perPage, currentPage } = paginationSanitizer(pagination);
 
-    return query
+    const list = await query
         .paginate({ perPage, currentPage, isLengthAware: true })
         .then((result) => ({
             contributors: result.data,
             pagination: result.pagination,
         }));
+
+    for (let i = 0; i < list.contributors.length; i++) {
+        const projects = list.contributors[i].repositories;
+        if (projects && projects.length) {
+            const projectData = await client
+                .select('*')
+                .from('repositories')
+                .whereIn('id', projects)
+                .andWhere({ decision: 'maintained' });
+            list.contributors[i].repositories = projectData;
+        }
+    }
+
+    return list;
 };
 
 /**
@@ -136,7 +152,7 @@ const getOne = async (id) => {
             'repository_maintainer.contributor_id'
         )
         .groupBy(`${tableName}.id`)
-        .where({ id })
+        .where({ id, isActive: true })
         .catch((error) => ({ error }));
 };
 

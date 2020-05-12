@@ -4,12 +4,9 @@ import {
     List,
     Datagrid,
     TextField,
-    ReferenceArrayField,
-    SingleFieldList,
 } from 'react-admin';
 import Chip from '@material-ui/core/Chip';
 
-import { MAINTAINED } from '../repositories';
 
 const ContributorLogo = ({ record }) => {
     return record && record.avatarUrl ? (
@@ -25,12 +22,21 @@ ContributorLogo.propTypes = {
     }),
 };
 
-const Repository = ({ record }) => {
-    if (!record || record.decision !== MAINTAINED ) return null;
+const Repository = ({ repo }) => {
     return (
         <Chip
-            label={record.name || record.id}
+            label={repo.name || repo.id}
         />
+    );
+};
+
+const Projects = ({record}) => {
+    if (!record || !record.repositories || !record.repositories.length ) return '-';
+    return (
+        <>
+            <span>Maintainer for {record.repositories.length} repositor{record.repositories.length > 1 ? 'ies' : 'y'}</span><br />
+            {record.repositories.map((repo) => <Repository key={`${record.id}_${repo.id}`} repo={repo} />)}
+        </>
     );
 };
 export const ContributorList = (props) => {
@@ -46,16 +52,7 @@ export const ContributorList = (props) => {
                 <ContributorLogo label="" sortable={false}/>
                 <TextField source="login" label="Login" />
                 <TextField source="name" label="Name" />
-                <ReferenceArrayField
-                    label="project maintainer"
-                    source="repositories"
-                    reference="repositories"
-                    sortable={false}
-                >
-                    <SingleFieldList>
-                        <Repository />
-                    </SingleFieldList>
-                </ReferenceArrayField>
+                <Projects source="repositories" label="Maintainer for" />
             </Datagrid>
         </List>
     );

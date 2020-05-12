@@ -54,14 +54,13 @@ const Repositories = ({ repositories }) => {
                 </CardContent>
                 <CardContent className={classes.repoList}>
                     {repositories
-                            .filter(r => !r.isReactAdmin)
                             .sort((a,b) => {
-                                if (a.openIssuesNumber < b.openIssuesNumber)
-                                    return 1;
-                                if (a.openIssuesNumber > b.openIssuesNumber)
-                                    return -1;
+                                if(a.name.trim().toLowerCase() < b.name.trim().toLowerCase()) { return -1; }
+                                if(a.name.trim().toLowerCase() > b.name.trim().toLowerCase()) { return 1; }
                                 return 0;
-                            }).map(repository => (
+                            })
+                            .filter(r => !r.isReactAdmin)
+                            .map(repository => (
                         <Repository repository={repository} />
                     ))}
                 </CardContent>
