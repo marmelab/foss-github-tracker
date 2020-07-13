@@ -48,6 +48,13 @@ const getFilteredQuery = (client, filters, sort) => {
         .groupBy(`${tableName}.id`);
 
     filters.map((filter) => {
+        let parsedFilters;
+        try {
+            parsedFilters = JSON.parse(filter.value);
+        } catch (error) {
+            parsedFilters = filter.value;
+        }
+
         switch (filter.operator) {
             case FILTER_OPERATOR_EQ:
                 query.andWhere(filter.name, '=', filter.value);
@@ -65,7 +72,9 @@ const getFilteredQuery = (client, filters, sort) => {
                 query.andWhere(filter.name, '>=', filter.value);
                 break;
             case FILTER_OPERATOR_IN:
-                query.whereIn(filter.name, JSON.parse(filter.value));
+                if (parsedFilters) {
+                    query.whereIn(filter.name, parsedFilters);
+                }
                 break;
             case FILTER_OPERATOR_PLP:
                 query.andWhere(filter.name, 'LIKE', `%${filter.value}%`);
