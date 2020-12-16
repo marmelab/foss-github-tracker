@@ -8,24 +8,24 @@
         "test:watch": "jest --watchAll"
     },
     "dependencies": {
-        "@octokit/rest": "18.0.0",
+        "@octokit/rest": "18.0.12",
         "convict": "6.0.0",
-        "knex": "0.21.2",
-        "knex-paginate": "1.2.1",
-        "knex-stringcase": "1.4.1",
+        "knex": "0.21.13",
+        "knex-paginate": "1.2.3",
+        "knex-stringcase": "1.4.3",
         "koa": "2.13.0",
         "koa-bodyparser": "4.3.0",
         "koa-json-error": "3.1.2",
-        "koa-router": "9.1.0",
+        "koa-router": "10.0.0",
         "koa-static": "5.0.0",
         "koa2-cors": "2.0.6",
         "lodash.omit": "4.5.0",
         "lodash.pick": "4.4.0",
-        "pg": "8.3.0",
+        "pg": "8.5.1",
         "querystring": "0.2.0",
         "signale": "1.4.0"
     },
     "devDependencies": {
-        "nodemon": "2.0.4"
+        "nodemon": "2.0.6"
     }
 }

@@ -21,6 +21,9 @@ logs: ## Display prot logs in development from Docker
 connect-db:
 	docker-compose exec postgres bash
 
+connect-node:
+	docker-compose exec api bash
+
 init-db-if-you-are-really-sure: ## Delete existing db if exist and create a new one from last dump
 	docker-compose exec postgres bash -ci '/db-scripts/init-db.sh'
 
