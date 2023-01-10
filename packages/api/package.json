@@ -9,7 +9,7 @@
     },
     "dependencies": {
         "@octokit/rest": "18.0.12",
-        "convict": "6.0.0",
+        "convict": "6.2.4",
         "knex": "0.21.13",
         "knex-paginate": "1.2.3",
         "knex-stringcase": "1.4.3",
